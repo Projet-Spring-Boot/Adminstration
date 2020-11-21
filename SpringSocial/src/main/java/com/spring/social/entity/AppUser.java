@@ -6,33 +6,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "App_User", uniqueConstraints = { @UniqueConstraint(name = "APP_USER_UK", columnNames = "User_Name"),
-												@UniqueConstraint(name = "APP_USER_UK2", columnNames = "Email") })
-public class AppUser {
+/*@Table(name = "App_User", uniqueConstraints = { @UniqueConstraint(name = "APP_USER_UK", columnNames = "User_Name"),
+												@UniqueConstraint(name = "APP_USER_UK2", columnNames = "Email") })*/
+public class AppUser implements Serializable {
+
+	public static final String ROLE_USER = "ROLE_USER";
+	public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
 	@Id
-	@GeneratedValue
-	@Column(name = "User_Id", nullable = false)
 	private Long userId;
-
-	@Column(name = "User_Name", length = 36, nullable = false)
 	private String userName;
-
-	@Column(name = "Email", length = 128, nullable = false)
 	private String email;
-
-	@Column(name = "First_Name", length = 36, nullable = true)
 	private String firstName;
-
-	@Column(name = "Last_Name", length = 36, nullable = true)
 	private String lastName;
-
-	@Column(name = "Encryted_Password", length = 128, nullable = false)
 	private String encrytedPassword;
-
-	@Column(name = "Enabled", length = 1, nullable = false)
+	private String userRole;
 	private boolean enabled;
 
 	public Long getUserId() {
@@ -91,4 +82,11 @@ public class AppUser {
 		this.enabled = enabled;
 	}
 
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
 }

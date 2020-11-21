@@ -7,6 +7,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
  
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,17 @@ import com.spring.social.entity.UserRole;
 @Repository
 @Transactional
 public class AppRoleDAO {
+
+    private RedisTemplate<String, AppRole> redisTemplate;
+
+    private HashOperations hashOperations;
+
+
+    public AppRoleDAO(RedisTemplate<String, AppRole> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+
+        hashOperations = redisTemplate.opsForHash();
+    }
  
     @Autowired
     private EntityManager entityManager;

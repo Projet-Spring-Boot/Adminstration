@@ -24,9 +24,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private AppUserDAO appUserDAO;
   
-    @Autowired
-    private AppRoleDAO appRoleDAO;
-  
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
   
@@ -41,8 +38,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   
         System.out.println("Found User: " + appUser);
   
-        // [ROLE_USER, ROLE_ADMIN,..]
-        List<String> roleNames = this.appRoleDAO.getRoleNames(appUser.getUserId());
+/*        // [ROLE_USER, ROLE_ADMIN,..]
+        String roleNames = this.appUserDAO.getRoleNames(appUser.getUserId());
   
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
         if (roleNames != null) {
@@ -51,9 +48,34 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 GrantedAuthority authority = new SimpleGrantedAuthority(role);
                 grantList.add(authority);
             }
+        }*/
+
+        // [ROLE_USER, ROLE_ADMIN,..]
+        String roleName = this.appUserDAO.getRoleNames(appUser.getUserId());
+
+        List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
+        List<String> roleList = new ArrayList<String>();
+
+        if (roleName != null) {
+            if(roleName == "ROLE_ADMIN")
+            {
+                GrantedAuthority authority1 = new SimpleGrantedAuthority("ROLE_ADMIN");
+                grantList.add(authority1);
+                roleList.add("ROLE_ADMIN");
+                GrantedAuthority authority2 = new SimpleGrantedAuthority("ROLE_USER");
+                grantList.add(authority2);
+                roleList.add("ROLE_USER");
+
+            }
+            else
+            {
+                GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
+                grantList.add(authority);
+                roleList.add("ROLE_USER");
+            }
         }
   
-        SocialUserDetailsImpl userDetails = new SocialUserDetailsImpl(appUser, roleNames);
+        SocialUserDetailsImpl userDetails = new SocialUserDetailsImpl(appUser, roleList);
   
         return userDetails;
     }

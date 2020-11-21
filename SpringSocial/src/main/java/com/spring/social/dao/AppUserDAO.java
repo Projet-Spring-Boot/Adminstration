@@ -7,8 +7,11 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-  
+
+import com.spring.social.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.UserProfile;
@@ -23,50 +26,45 @@ import com.spring.social.security.crypto.EncryptedPassword;
 @Repository
 @Transactional
 public class AppUserDAO {
+
+    private RedisTemplate<String, AppUser> redisTemplate;
+
+    private HashOperations hashOperations;
+
+
+    public AppUserDAO(RedisTemplate<String, AppUser> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+
+        hashOperations = redisTemplate.opsForHash();
+    }
   
     @Autowired
     private EntityManager entityManager;
   
     @Autowired
     private AppRoleDAO appRoleDAO;
-  
+
     public AppUser findAppUserByUserId(Long userId) {
         try {
-            String sql = "Select e from " + AppUser.class.getName() + " e " //
-                    + " Where e.userId = :userId ";
-  
-            Query query = entityManager.createQuery(sql, AppUser.class);
-            query.setParameter("userId", userId);
-  
-            return (AppUser) query.getSingleResult();
+            return (AppUser) hashOperations.get("APP_USER", userId);
         } catch (NoResultException e) {
             return null;
         }
     }
-  
+
     public AppUser findAppUserByUserName(String userName) {
+
         try {
-            String sql = "Select e from " + AppUser.class.getName() + " e "
-                    + " Where e.userName = :userName ";
-  
-            Query query = entityManager.createQuery(sql, AppUser.class);
-            query.setParameter("userName", userName);
-  
-            return (AppUser) query.getSingleResult();
+            return (AppUser) hashOperations.get("APP_USER", userName);
         } catch (NoResultException e) {
             return null;
         }
     }
-  
+
     public AppUser findByEmail(String email) {
+
         try {
-            String sql = "Select e from " + AppUser.class.getName() + " e " //
-                    + " Where e.email = :email ";
-  
-            Query query = entityManager.createQuery(sql, AppUser.class);
-            query.setParameter("email", email);
-  
-            return (AppUser) query.getSingleResult();
+            return (AppUser)hashOperations.get("APP_USER", email);
         } catch (NoResultException e) {
             return null;
         }
@@ -156,6 +154,16 @@ public class AppUserDAO {
   
   
         return appUser;
+    }
+
+    public String getRoleNames(Long userId) {
+        try {
+            AppUser user1 = findAppUserByUserId(userId);
+            return user1.getUserRole();
+
+        } catch (NoResultException e) {
+            return null;
+        }
     }
   
 }
