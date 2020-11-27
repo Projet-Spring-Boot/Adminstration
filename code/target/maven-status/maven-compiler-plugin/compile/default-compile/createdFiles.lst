@@ -1,10 +1,12 @@
 com/spring/social/utils/WebUtil.class
 com/spring/social/security/crypto/EncryptedPassword.class
+com/spring/social/entity/InfoConnection.class
 com/spring/social/dao/AppUserDAO.class
 com/spring/social/social/SocialUserDetailsImpl.class
 com/spring/social/ApplicationSocial.class
 com/spring/social/security/configuration/WebSecurityConfiguration.class
 com/spring/social/social/configuration/SocialConfiguration.class
+com/spring/social/dao/InfoConnectionDAO.class
 com/spring/social/validator/AppUserValidator.class
 com/spring/social/entity/UserConnection.class
 com/spring/social/dao/UserConnectionDAO.class

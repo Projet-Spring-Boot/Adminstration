@@ -14,6 +14,7 @@ public class AppUser {
 
 	@Id
 	@GeneratedValue
+	//@OneToMany(fetch = FetchType.LAZY, mappedBy="InfoConnection")
 	@Column(name = "User_Id", nullable = false)
 	private Long userId;
 
