@@ -1,5 +1,7 @@
 package com.spring.social.entity;
 
+import org.springframework.data.redis.core.RedisHash;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,9 +10,13 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.io.Serializable;
 
-@Entity
+/*@Entity*/
 /*@Table(name = "App_User", uniqueConstraints = { @UniqueConstraint(name = "APP_USER_UK", columnNames = "User_Name"),
 												@UniqueConstraint(name = "APP_USER_UK2", columnNames = "Email") })*/
+/*@Data
+@NoArgsConstructor*/
+@Entity
+@RedisHash("APP_USER")
 public class AppUser implements Serializable {
 
 	public static final String ROLE_USER = "ROLE_USER";

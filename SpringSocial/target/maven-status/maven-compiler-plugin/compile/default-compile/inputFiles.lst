@@ -7,16 +7,14 @@
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/service/SocialUserDetailsServiceImpl.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/entity/PersistentLogin.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/utils/WebUtil.java
+/mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/dao/RedisConfig.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/security/crypto/EncryptedPassword.java
-/mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/entity/UserRole.java
-/mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/dao/AppRoleDAO.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/social/ConnectionSignUpImpl.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/entity/AppUser.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/ApplicationSocial.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/form/AppUserForm.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/social/configuration/SocialConfiguration.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/social/SocialUserDetailsImpl.java
-/mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/entity/AppRole.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/dao/UserConnectionDAO.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/dao/AppUserDAO.java
 /mnt/d/Cours/3eme_annee/projet_redis/Adminstration/SpringSocial/src/main/java/com/spring/social/service/UserDetailsServiceImpl.java

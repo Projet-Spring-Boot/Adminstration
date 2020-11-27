@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.social.dao.AppRoleDAO;
 import com.spring.social.dao.AppUserDAO;
 import com.spring.social.entity.AppUser;
 import com.spring.social.social.SocialUserDetailsImpl;

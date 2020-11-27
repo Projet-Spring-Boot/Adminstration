@@ -6,9 +6,7 @@ import java.util.UUID;
   
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
-import com.spring.social.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,7 +16,6 @@ import org.springframework.social.connect.UserProfile;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.social.entity.AppRole;
 import com.spring.social.entity.AppUser;
 import com.spring.social.form.AppUserForm;
 import com.spring.social.security.crypto.EncryptedPassword;
@@ -26,6 +23,9 @@ import com.spring.social.security.crypto.EncryptedPassword;
 @Repository
 @Transactional
 public class AppUserDAO {
+
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     private RedisTemplate<String, AppUser> redisTemplate;
 
@@ -37,12 +37,9 @@ public class AppUserDAO {
 
         hashOperations = redisTemplate.opsForHash();
     }
-  
+
     @Autowired
     private EntityManager entityManager;
-  
-    @Autowired
-    private AppRoleDAO appRoleDAO;
 
     public AppUser findAppUserByUserId(Long userId) {
         try {
@@ -64,12 +61,12 @@ public class AppUserDAO {
     public AppUser findByEmail(String email) {
 
         try {
-            return (AppUser)hashOperations.get("APP_USER", email);
+            return (AppUser) hashOperations.get("APP_USER", email);
         } catch (NoResultException e) {
             return null;
         }
     }
-  
+
     private String findAvailableUserName(String userName_prefix) {
         AppUser account = this.findAppUserByUserName(userName_prefix);
         if (account == null) {
@@ -84,17 +81,17 @@ public class AppUserDAO {
             }
         }
     }
-  
+
     // Auto create App User Account.
     public AppUser createAppUser(Connection<?> connection) {
-  
+
         ConnectionKey key = connection.getKey();
         //  (google,123) ...
-  
+
         System.out.println("key= (" + key.getProviderId() + "," + key.getProviderUserId() + ")");
-  
+
         UserProfile userProfile = connection.fetchUserProfile();
-  
+
         String email = userProfile.getEmail();
         AppUser appUser = this.findByEmail(email);
         if (appUser != null) {
@@ -102,13 +99,13 @@ public class AppUserDAO {
         }
         String userName_prefix = userProfile.getFirstName().trim().toLowerCase()//
                 + "_" + userProfile.getLastName().trim().toLowerCase();
-  
+
         String userName = this.findAvailableUserName(userName_prefix);
         //
         // Random Password! TODO: Need send email to User!
         //
         String randomPassword = UUID.randomUUID().toString().substring(0, 5);
-        System.out.println("PASSWORD =" +randomPassword);
+        System.out.println("PASSWORD =" + randomPassword);
         String encrytedPassword = EncryptedPassword.encrytePassword(randomPassword);
         //
         appUser = new AppUser();
@@ -118,17 +115,17 @@ public class AppUserDAO {
         appUser.setEmail(email);
         appUser.setFirstName(userProfile.getFirstName());
         appUser.setLastName(userProfile.getLastName());
-  
+
         this.entityManager.persist(appUser);
-  
+
         // Create default Role
         List<String> roleNames = new ArrayList<String>();
-        roleNames.add(AppRole.ROLE_USER);
-        this.appRoleDAO.createRoleFor(appUser, roleNames);
-  
+        roleNames.add(ROLE_USER);
+        this.createRoleFor(appUser, roleNames);
+
         return appUser;
     }
-  
+
     public AppUser registerNewUserAccount(AppUserForm appUserForm, List<String> roleNames) {
         AppUser appUser = new AppUser();
         appUser.setUserName(appUserForm.getUserName());
@@ -140,19 +137,19 @@ public class AppUserDAO {
         appUser.setEncrytedPassword(encrytedPassword);
         this.entityManager.persist(appUser);
         this.entityManager.flush();
-  
-        this.appRoleDAO.createRoleFor(appUser, roleNames);
-  
+
+        this.createRoleFor(appUser, roleNames);
+
         return appUser;
     }
-    
+
     public AppUser editUserAccount(AppUser appUser) {
 
-    	System.out.println("Edit user with password : "+ appUser.getEncrytedPassword());
+        System.out.println("Edit user with password : " + appUser.getEncrytedPassword());
         this.entityManager.persist(appUser);
         this.entityManager.flush();
-  
-  
+
+
         return appUser;
     }
 
@@ -165,5 +162,11 @@ public class AppUserDAO {
             return null;
         }
     }
-  
+
+    public void createRoleFor(AppUser appUser, List<String> roleNames) {
+        //
+    /*if(ROLE_ADMIN){}
+    }*/
+
+    }
 }

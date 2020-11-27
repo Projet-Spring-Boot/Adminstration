@@ -1,5 +1,6 @@
 package com.spring.social.security.configuration;
 
+import com.spring.social.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,8 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.social.security.SpringSocialConfigurer;
-
-import com.spring.social.entity.AppRole;
 
 @Configuration
 @EnableWebSecurity
@@ -33,10 +32,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		// Pages do not require login
 		http.authorizeRequests().antMatchers("/", "/signup", "/login", "/logout").permitAll();
 
-		http.authorizeRequests().antMatchers("/userInfo","/sendMessage").access("hasRole('" + AppRole.ROLE_USER + "')");
+		http.authorizeRequests().antMatchers("/userInfo","/sendMessage").access("hasRole('" + AppUser.ROLE_USER + "')");
 
 		// For ADMIN only.
-		http.authorizeRequests().antMatchers("/admin").access("hasRole('" + AppRole.ROLE_ADMIN + "')");
+		http.authorizeRequests().antMatchers("/admin").access("hasRole('" + AppUser.ROLE_ADMIN + "')");
 
 		// When the user has logged in as XX.
 		// But access a page that requires role YY,

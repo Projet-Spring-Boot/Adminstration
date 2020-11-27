@@ -1,5 +1,7 @@
 package com.spring.social.entity;
 
+import org.springframework.data.redis.core.RedisHash;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -8,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
+@RedisHash("USERCONNECTION")
 public class UserConnection implements Serializable {
 
 	private static final long serialVersionUID = -6991752510891411572L;

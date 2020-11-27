@@ -12,17 +12,13 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.web.ProviderSignInUtils;
-import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
-import org.springframework.social.twitter.api.impl.TwitterTemplate;
-import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,9 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.social.dao.AppUserDAO;
 import com.spring.social.dao.UserConnectionDAO;
-import com.spring.social.entity.AppRole;
 import com.spring.social.entity.AppUser;
-import com.spring.social.entity.UserConnection;
 import com.spring.social.form.AppUserForm;
 import com.spring.social.form.MessageForm;
 import com.spring.social.security.SecurityAuto;
@@ -184,7 +178,7 @@ public class MainController {
 		}
 
 		List<String> roleNames = new ArrayList<String>();
-		roleNames.add(AppRole.ROLE_USER);
+		roleNames.add(AppUser.ROLE_USER);
 
 		AppUser registered = null;
 
