@@ -3,7 +3,8 @@ package com.spring.social.dao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-  
+
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
@@ -21,25 +22,32 @@ import com.spring.social.form.AppUserForm;
 import com.spring.social.security.crypto.EncryptedPassword;
   
 @Repository
-@Transactional
+/*@Transactional*/
 public class AppUserDAO {
 
     public static final String ROLE_USER = "ROLE_USER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
-    private RedisTemplate<String, AppUser> redisTemplate;
+    //private RedisTemplate<String, AppUser> redisTemplate;
 
     private HashOperations hashOperations;
 
 
-    public AppUserDAO(RedisTemplate<String, AppUser> redisTemplate) {
+/*    public AppUserDAO(RedisTemplate<String, AppUser> redisTemplate) {
         this.redisTemplate = redisTemplate;
 
         hashOperations = redisTemplate.opsForHash();
-    }
-
+    }*/
     @Autowired
-    private EntityManager entityManager;
+    RedisTemplate redisTemplate;
+
+   /* @Autowired
+    private EntityManager entityManager;*/
+
+    @PostConstruct
+    private void init(){
+        hashOperations = redisTemplate.opsForHash();
+    }
 
     public AppUser findAppUserByUserId(Long userId) {
         try {
@@ -116,7 +124,7 @@ public class AppUserDAO {
         appUser.setFirstName(userProfile.getFirstName());
         appUser.setLastName(userProfile.getLastName());
 
-        this.entityManager.persist(appUser);
+        //this.entityManager.persist(appUser);
 
         // Create default Role
         List<String> roleNames = new ArrayList<String>();
@@ -135,8 +143,8 @@ public class AppUserDAO {
         appUser.setEnabled(true);
         String encrytedPassword = EncryptedPassword.encrytePassword(appUserForm.getPassword());
         appUser.setEncrytedPassword(encrytedPassword);
-        this.entityManager.persist(appUser);
-        this.entityManager.flush();
+        //this.entityManager.persist(appUser);
+        //this.entityManager.flush();
 
         this.createRoleFor(appUser, roleNames);
 
@@ -146,8 +154,8 @@ public class AppUserDAO {
     public AppUser editUserAccount(AppUser appUser) {
 
         System.out.println("Edit user with password : " + appUser.getEncrytedPassword());
-        this.entityManager.persist(appUser);
-        this.entityManager.flush();
+        //this.entityManager.persist(appUser);
+       // this.entityManager.flush();
 
 
         return appUser;

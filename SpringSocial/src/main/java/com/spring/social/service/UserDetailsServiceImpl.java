@@ -56,7 +56,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<String> roleList = new ArrayList<String>();
 
         if (roleName != null) {
-            if(roleName == "ROLE_ADMIN")
+            if(roleName.equals( "ROLE_ADMIN"))
             {
                 GrantedAuthority authority1 = new SimpleGrantedAuthority("ROLE_ADMIN");
                 grantList.add(authority1);
