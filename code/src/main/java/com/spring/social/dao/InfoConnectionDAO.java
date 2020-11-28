@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.social.entity.InfoConnection;
+import com.spring.social.entity.AppUser;;
  
 @Repository
 @Transactional
@@ -76,6 +77,28 @@ public class InfoConnectionDAO {
     private static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime() - date1.getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
+    }
+    
+    public List<AppUser> innerJoin()
+    {
+        String sql = "select u from InfoConnection ic " +
+            "INNER JOIN App_User u ON u.User_Id = ic.User_Id";
+
+        Query query = this.entityManager.createQuery(sql, String.class);
+
+        return (List<AppUser>)query.getResultList();
+    }
+
+    public List<AppUser> innerJoinByUserId(long userId)
+    {
+        String sql = "select u from InfoConnection ic " +
+            "INNER JOIN App_User u ON u.User_Id = ic.User_Id" +
+            "WHERE u.User_Id = :User_Id";
+
+        Query query = this.entityManager.createQuery(sql, String.class);
+        query.setParameter("User_Id", userId);
+
+        return (List<AppUser>)query.getResultList();
     }
 
 }

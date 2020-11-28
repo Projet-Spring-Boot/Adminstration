@@ -23,8 +23,8 @@ public class InfoConnection {
 	@Column(name = "ConnectionId", nullable = false)
 	private Long connectionid;
 
-	//@ManyToOne(fetch = FetchType.LAZY)
-	//@JoinColumn(name = "User_Id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "User_Id", unique=false, nullable=false, updatable=false)
 	@Column(name = "UserId", nullable = false)
 	private Long userid;
 	
