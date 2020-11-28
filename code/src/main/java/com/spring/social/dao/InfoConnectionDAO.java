@@ -1,10 +1,9 @@
 package com.spring.social.dao;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.time.temporal.ChronoUnit;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -64,14 +63,7 @@ public class InfoConnectionDAO {
         Query query = this.entityManager.createQuery(sql, String.class);
         query.setParameter("userId", userId);
 
-        List<String> res = query.getResultList();
-        List<Long> longs = new ArrayList();
-        for(String i : res)
-        {
-            longs.add(Long.parseLong(i));
-        }
-
-        return longs;
+        return (List<Long>)query.getResultList();
     }
 
     private static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {

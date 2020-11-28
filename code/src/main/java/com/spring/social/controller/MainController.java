@@ -1,6 +1,7 @@
 package com.spring.social.controller;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,11 +42,15 @@ import com.spring.social.form.MessageForm;
 import com.spring.social.security.SecurityAuto;
 import com.spring.social.utils.WebUtil;
 import com.spring.social.validator.AppUserValidator;
+import com.spring.social.dao.InfoConnectionDAO;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;    
 
 @Controller
 @Transactional
@@ -71,6 +76,9 @@ public class MainController {
 	
 	@Autowired
 	private ConnectionRepository coR;
+
+	@Autowired
+	private InfoConnectionDAO infoConnectionDAO;
 
 	@InitBinder
 	protected void initBinder(WebDataBinder dataBinder) {
@@ -193,6 +201,7 @@ public class MainController {
 
 		AppUser registered = null;
 
+		//creation compte
 		try {
 			registered = appUserDAO.registerNewUserAccount(appUserForm, roleNames);
 
@@ -220,6 +229,9 @@ public class MainController {
 
 		// After registration is complete, automatic login.
 		SecurityAuto.logInUser(registered, roleNames);
+		
+		java.util.Date date = new Date();
+		System.out.println("LA DATEUH !!!! " + date);
 
 		return "redirect:/userInfo";
 	}

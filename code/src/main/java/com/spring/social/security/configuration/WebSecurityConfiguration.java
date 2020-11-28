@@ -60,7 +60,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	// This bean is load the user specific data when form login is used.
 	@Override
-	public UserDetailsService userDetailsService() {
+	public UserDetailsService userDetailsService() 
+	{
+		System.out.println("it's the me !!!!!!");
+
 		return userDetailsService;
 	}
 	

@@ -1,7 +1,5 @@
 package com.spring.social.entity;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +12,8 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "InfoConnection")
 public class InfoConnection {
@@ -23,16 +23,16 @@ public class InfoConnection {
 	@Column(name = "ConnectionId", nullable = false)
 	private Long connectionid;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "User_Id", unique=false, nullable=false, updatable=false)
+	//@ManyToOne(fetch = FetchType.LAZY)
+	//@JoinColumn(name = "User_Id", unique=false, nullable=false, updatable=false)
 	@Column(name = "UserId", nullable = false)
 	private Long userid;
 	
-    @Temporal(TemporalType.TIMESTAMP)
+    //@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "Login_Date")
 	private Date Login_Date;
 	
-    @Temporal(TemporalType.TIMESTAMP)
+    //@Temporal(TemporalType.TIMESTAMP)
     @Column(name = "Logout_Date")
 	private Date Logout_Date;
 
