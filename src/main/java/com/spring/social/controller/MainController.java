@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -43,6 +44,7 @@ import com.spring.social.security.SecurityAuto;
 import com.spring.social.utils.WebUtil;
 import com.spring.social.validator.AppUserValidator;
 import com.spring.social.dao.InfoConnectionDAO;
+import com.spring.social.entity.InfoConnection;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -54,7 +56,10 @@ import java.time.LocalDateTime;
 
 @Controller
 @Transactional
-public class MainController {
+public class MainController 
+{
+
+	private long connectionId = 0;
 
 	@Autowired
 	private AppUserDAO appUserDAO;
@@ -119,16 +124,29 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
-	public String logoutSuccessfulPage(Model model) {
+	public String logoutSuccessfulPage(Model model) 
+	{
+        System.out.println("SUCCESSFULLT LOG OUT ");
+
 		model.addAttribute("title", "Logout");
+
+		infoConnectionDAO.AddLogout(connectionId);
+
 		return "logoutSuccessfulPage";
 	}
 
 	@RequestMapping(value = "/userInfo", method = RequestMethod.GET)
-	public String userInfo(Model model, Principal principal) {
-
+	public String userInfo(Model model, Principal principal) 
+	{
+		
 		// After user login successfully.
 		AppUser logineduser2 = this.appUserDAO.findAppUserByUserName(principal.getName());
+
+		List<Long> list = infoConnectionDAO.getConnectionIdByUserId(logineduser2.getUserId());
+		connectionId = Collections.max(list,null);
+
+		System.out.println("List = " + list);
+		System.out.println("connection id = " + connectionId);
 
 		model.addAttribute("appUser", logineduser2);
 
@@ -230,8 +248,7 @@ public class MainController {
 		// After registration is complete, automatic login.
 		SecurityAuto.logInUser(registered, roleNames);
 		
-		java.util.Date date = new Date();
-		System.out.println("LA DATEUH !!!! " + date);
+		infoConnectionDAO.CreateInfoConnection(registered.getUserId());
 
 		return "redirect:/userInfo";
 	}

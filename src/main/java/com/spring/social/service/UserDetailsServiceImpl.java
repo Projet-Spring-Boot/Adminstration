@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.social.dao.AppRoleDAO;
 import com.spring.social.dao.AppUserDAO;
+import com.spring.social.dao.InfoConnectionDAO;
 import com.spring.social.entity.AppUser;
 import com.spring.social.social.SocialUserDetailsImpl;
   
@@ -26,6 +27,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   
     @Autowired
     private AppRoleDAO appRoleDAO;
+
+    @Autowired
+    private InfoConnectionDAO infoConnectionDAO;
   
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -40,6 +44,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
   
         System.out.println("Found User: " + appUser);
+
+		infoConnectionDAO.CreateInfoConnection(appUser.getUserId());
   
         // [ROLE_USER, ROLE_ADMIN,..]
         List<String> roleNames = this.appRoleDAO.getRoleNames(appUser.getUserId());
