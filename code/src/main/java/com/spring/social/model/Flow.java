@@ -1,20 +1,25 @@
 package com.spring.social.model;
 
+import org.springframework.data.redis.core.RedisHash;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class flow implements Serializable {
 
-    private int id;
+@RedisHash
+public class Flow implements Serializable {
+
+    private String id;
     private String user_img;
     private String user_name;
     private Date publishing;
     private String published_content;
-    private String published_media;
+    private List<String> published_media;
     private String source;
 
 
-    public flow(String user_img, String user_name, Date publishing, String published_content, String published_media, String source) {
+    public Flow(String user_img, String user_name, Date publishing, String published_content, List<String> published_media, String source) {
         this.user_img = user_img;
         this.user_name = user_name;
         this.publishing = publishing;
@@ -23,11 +28,15 @@ public class flow implements Serializable {
         this.source = source;
     }
 
-    public int getId() {
+    public Flow() {
+
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -63,11 +72,11 @@ public class flow implements Serializable {
         this.published_content = published_content;
     }
 
-    public String getPublished_media() {
+    public List<String> getPublished_media() {
         return published_media;
     }
 
-    public void setPublished_media(String published_media) {
+    public void setPublished_media(List<String> published_media) {
         this.published_media = published_media;
     }
 

@@ -1,13 +1,16 @@
 package com.spring.social;
 
-import com.spring.social.model.flow;
+import com.spring.social.model.Flow;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @SpringBootApplication
+@EnableRedisRepositories
 public class ApplicationSocial {
 
 	@Bean
@@ -17,8 +20,8 @@ public class ApplicationSocial {
 	}
 
 	@Bean
-	RedisTemplate<String, flow> redisTemplate (){
-		RedisTemplate<String, flow> redisTemplate = new RedisTemplate<>();
+	RedisTemplate<String, Flow> redisTemplate (){
+		RedisTemplate<String, Flow> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(jedisConnectionFactory());
 		return redisTemplate;
 	}
