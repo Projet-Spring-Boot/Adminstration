@@ -389,6 +389,7 @@ public class MainController {
 
 				timeline.forEach(tweet -> {
 					Flow flow = new Flow();
+					flow.setId(TokenGenerator.generateNewToken());
 					flow.setUser_name(tweet.getUser().getName());
 					flow.setUser_img(tweet.getUser().get400x400ProfileImageURL());
 					flow.setPublished_content(tweet.getText());
