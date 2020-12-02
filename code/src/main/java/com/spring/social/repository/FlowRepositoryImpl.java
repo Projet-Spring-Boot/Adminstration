@@ -7,16 +7,19 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Repository
 public class FlowRepositoryImpl implements FlowRepository {
 
     private HashOperations hashOperations;
-    private RedisTemplate<String, Flow> redisTemplate;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     //@Autowired
-    public FlowRepositoryImpl(RedisTemplate<String, Flow> redisTemplate) {
+    public FlowRepositoryImpl(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
 
         hashOperations = redisTemplate.opsForHash();
@@ -24,7 +27,6 @@ public class FlowRepositoryImpl implements FlowRepository {
 
     @Override
     public void save(Flow flow) {
-
         hashOperations.put("FLOW", flow.getId(), flow);
 
     }
@@ -46,5 +48,17 @@ public class FlowRepositoryImpl implements FlowRepository {
         hashOperations.delete("FLOW", id);
 
     }
+
+    /*@Override
+    public String drop(){
+        Map<String, Flow> map=new HashMap<>();
+        map=this.findAll();
+        map.forEach(iteraror ->{
+            map.
+        });
+
+
+
+        return "\nDatabase dropped!\n"}*/
 
 }

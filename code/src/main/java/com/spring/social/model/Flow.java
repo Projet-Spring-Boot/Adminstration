@@ -1,15 +1,21 @@
 package com.spring.social.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-
-@RedisHash
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@RedisHash("FLOW")
 public class Flow implements Serializable {
 
+    @Id
     private String id;
     private String user_img;
     private String user_name;
@@ -19,18 +25,13 @@ public class Flow implements Serializable {
     private String source;
 
 
-    public Flow(String user_img, String user_name, Date publishing, String published_content, List<String> published_media, String source) {
-        this.user_img = user_img;
-        this.user_name = user_name;
-        this.publishing = publishing;
-        this.published_content = published_content;
-        this.published_media = published_media;
-        this.source = source;
-    }
+    /*public Flow(String id) {
+        this.id = id;
+    }*/
 
-    public Flow() {
+    /*public Flow() {
 
-    }
+    }*/
 
     public String getId() {
         return id;

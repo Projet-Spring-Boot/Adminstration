@@ -3,6 +3,7 @@ package com.spring.social.controller;
 import java.security.Principal;
 import java.util.*;
 
+import com.spring.social.RandId.TokenGenerator;
 import com.spring.social.model.Flow;
 import com.spring.social.repository.FlowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +72,9 @@ public class MainController {
 	@Autowired
 	private InfoConnectionDAO infoConnectionDAO;
 
+	@Autowired
+	private FlowRepository flowrepository;
+
 	@InitBinder
 	protected void initBinder(WebDataBinder dataBinder) {
 
@@ -91,8 +95,8 @@ public class MainController {
 	public String welcomePage(Model model) {
 		model.addAttribute("title", "Welcome");
 
-		FlowRepository flowrepository=null;
-		Map<String,Flow> yourTimelimeDefinition = null;
+		//Version hardcodée pour tests de connexion et écriture dans redis
+		/*Map<String,Flow> yourTimelimeDefinition = null;
 
 		// [Step 1] : Récupérer la timeline de l'utilisateur 'principal' connecté.
 		//UserConnection uc = userConnectionDAO.findUserConnectionByUserName(username);
@@ -102,16 +106,18 @@ public class MainController {
 
 			System.out.println("Création du Flow");
 			Flow flow = new Flow();
+			flow.setId("fdfkjdf('4453245");
 			flow.setUser_name("Jean-Claude");
 			flow.setUser_img("https://upload.wikimedia.org/wikipedia/commons/2/27/Jean-Claude_Van_Damme_2012.jpg");
 			flow.setPublished_content("J'adore l'eau...Dans 20 ans y en aura plus");
 			flow.setPublishing(Calendar.getInstance().getTime());
 
+			System.out.println("\n" + "L'id du flow vaut : " + flow.getId());
 			System.out.println(flow.getUser_name()+"\n"+flow.getUser_img()+"\n"+flow.getPublished_content()+"\n"+flow.getPublishing());
 
 			String[] medias = new String[3];
-			medias[1]= "https://fr.wikipedia.org/wiki/Eau";
-			medias[2]="https://www.boboco.fr/bouteilles-de-spiritueux/53-bouteille-moonea-70cl.html";
+			medias[0]= "https://fr.wikipedia.org/wiki/Eau";
+			medias[1]="https://www.boboco.fr/bouteilles-de-spiritueux/53-bouteille-moonea-70cl.html";
 			List<String> mediaList=new ArrayList<String>();
 			for(int i=0;i<medias.length; i++)
 			{
@@ -123,8 +129,6 @@ public class MainController {
 			flow.setPublished_media(mediaList);
 
 			flowrepository.save(flow);
-
-			//TODO : Régler problème d'initialisation du FlowRepository
 
 			yourTimelimeDefinition=flowrepository.findAll();
 
@@ -141,7 +145,7 @@ public class MainController {
 
 		}
 
-		System.out.println("Sortie du try");
+		System.out.println("Sortie du try");*/
 		return "welcomePage";
 	}
 
@@ -421,50 +425,89 @@ public class MainController {
 
 
 
-	@RequestMapping(value="/test_updateFlow", method=RequestMethod.GET)
-	public Map<String,Flow> updateFlow(@RequestBody String  username){
-		FlowRepository flowrepository = null;
+	@RequestMapping(value = { "/TestUpdate" }, method = RequestMethod.GET)
+	public String TestUpdate(Model model) {
+		model.addAttribute("title", "Welcome");
+
+		//FlowRepository flowrepository;
 		Map<String,Flow> yourTimelimeDefinition = null;
 
 		// [Step 1] : Récupérer la timeline de l'utilisateur 'principal' connecté.
 		//UserConnection uc = userConnectionDAO.findUserConnectionByUserName(username);
+		System.out.println("Entrée dans le try/catch");
 		try {
 
 
-					Flow flow = new Flow();
-					flow.setUser_name("Jean-Claude");
-					flow.setUser_img("https://upload.wikimedia.org/wikipedia/commons/2/27/Jean-Claude_Van_Damme_2012.jpg");
-					flow.setPublished_content("J'adore l'eau...Dans 20 ans y en aura plus");
-					flow.setPublishing(Calendar.getInstance().getTime());
+			System.out.println("Création du Flow");
+			Flow Testflow = new Flow();
+			Testflow.setId(TokenGenerator.generateNewToken());
+			Testflow.setUser_name("Jean-Claude");
+			Testflow.setUser_img("https://upload.wikimedia.org/wikipedia/commons/2/27/Jean-Claude_Van_Damme_2012.jpg");
+			Testflow.setPublished_content("J'adore l'eau...Dans 20 ans y en aura plus");
+			Testflow.setPublishing(Calendar.getInstance().getTime());
 
-					String[] medias = new String[3];
-					medias[1]= "https://fr.wikipedia.org/wiki/Eau";
-					medias[2]="https://www.boboco.fr/bouteilles-de-spiritueux/53-bouteille-moonea-70cl.html";
-					List<String> mediaList=null;
-					for(int i=0;i<medias.length; i++)
-					{
+			System.out.println("\n" + "L'id du flow vaut : " + Testflow.getId());
+			System.out.println(Testflow.getUser_name()+"\n"+Testflow.getUser_img()+"\n"+Testflow.getPublished_content()+"\n"+Testflow.getPublishing());
 
-						//mediaList.add(medias[i].getText());
-						mediaList.add(medias[i]);
-					}
-					flow.setPublished_media(mediaList);
+			String[] medias = new String[3];
+			medias[0]= "https://fr.wikipedia.org/wiki/Eau";
+			medias[1]="https://www.boboco.fr/bouteilles-de-spiritueux/53-bouteille-moonea-70cl.html";
+			List<String> mediaList=new ArrayList<String>();
+			for(int i=0;i<medias.length; i++)
+			{
 
-					flowrepository.save(flow);
+				//mediaList.add(medias[i].getText());
+				mediaList.add(medias[i]);
+			}
 
-				yourTimelimeDefinition=flowrepository.findAll();
+			Testflow.setPublished_media(mediaList);
 
-				yourTimelimeDefinition.forEach((String, Flow) -> System.out.println(String+":"+Flow));
+			flowrepository.save(Testflow);
+
+			System.out.println("Création du Flow2");
+			Flow Testflow2 = new Flow();
+			Testflow2.setId(TokenGenerator.generateNewToken());
+			Testflow2.setUser_name("Jules Winnfield");
+			Testflow2.setUser_img("https://vignette.wikia.nocookie.net/quentin-tarantino/images/0/00/99409e.jpg/revision/latest/scale-to-width-down/310?cb=20180122000605");
+			Testflow2.setPublished_content("And I will strike down upon thee with great vegance and furious anger those who attempt to poison and destroy my brothers. And you will know my name is the lord when I lay my vengance upon thee");
+			Testflow2.setPublishing(Calendar.getInstance().getTime());
+
+			System.out.println("\n" + "L'id du flow vaut : " + Testflow2.getId());
+			System.out.println(Testflow2.getUser_name()+"\n"+Testflow2.getUser_img()+"\n"+Testflow2.getPublished_content()+"\n"+Testflow2.getPublishing());
+
+			medias[0]= "https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/M1911a1.jpg/420px-M1911a1.jpg";
+			medias[1]="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Holy_bible_book.jpg/1200px-Holy_bible_book.jpg";
+			medias[2]="https://d2h1pu99sxkfvn.cloudfront.net/b0/8509017/511983201_k0xNjo3Lur/P0.jpg";
+
+			for(int i=0;i<medias.length; i++)
+			{
+
+				//mediaList.add(medias[i].getText());
+				mediaList.add(medias[i]);
+			}
+
+			Testflow.setPublished_media(mediaList);
+
+			flowrepository.save(Testflow2);
+
+			yourTimelimeDefinition=flowrepository.findAll();
+
+			System.out.println("\n"+"Ecriture du repo dans la map OK, génération de l'affichage..."+"\n");
+			System.out.println(flowrepository.findAll());
+
+			//yourTimelimeDefinition.forEach((String, Flow) -> System.out.println(String+":"+Flow.getUser_name()));
 
 
 			// [Step 3] : Renvoyer la timeline à l'IHM
 			//return yourTimelimeDefinition;
 
-			}catch (Exception e){
+		}catch (Exception e){
+			System.out.println(e+"\n"+"On est dans le catch");
 
 		}
 
-		return yourTimelimeDefinition;
-
+		System.out.println("Sortie du try");
+		return "welcomePage";
 	}
 
 	
