@@ -13,5 +13,6 @@ public interface FlowRepository {
     Map<String,Flow> findAll();
     Flow findById(String id);
     void deleteById(String id);
+    String drop();
 
 }

@@ -355,9 +355,10 @@ public class MainController {
 		}
 	}
 
-	/*@RequestMapping(value="/updateFlow", method=RequestMethod.POST)
+	@RequestMapping(value="/updateFlow", method=RequestMethod.POST)
 	public Map<String,Flow> updateFlow(@RequestBody String  username) {
-		Flowrepository flowrepository = null;
+		System.out.println("\nDropping the DB\n");
+		flowrepository.drop();
 		Map<String,Flow> yourTimelimeDefinition = null;
 
 		// [Step 1] : Récupérer la timeline de l'utilisateur 'principal' connecté.
@@ -421,7 +422,7 @@ public class MainController {
 
 		return yourTimelimeDefinition;
 
-	}*/
+	}
 
 
 
@@ -431,7 +432,8 @@ public class MainController {
 
 		//FlowRepository flowrepository;
 		Map<String,Flow> yourTimelimeDefinition = null;
-
+		System.out.println("\nDropping the DB\n");
+		flowrepository.drop();
 		// [Step 1] : Récupérer la timeline de l'utilisateur 'principal' connecté.
 		//UserConnection uc = userConnectionDAO.findUserConnectionByUserName(username);
 		System.out.println("Entrée dans le try/catch");

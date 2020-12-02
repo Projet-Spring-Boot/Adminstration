@@ -49,16 +49,13 @@ public class FlowRepositoryImpl implements FlowRepository {
 
     }
 
-    /*@Override
+    @Override
     public String drop(){
-        Map<String, Flow> map=new HashMap<>();
-        map=this.findAll();
-        map.forEach(iteraror ->{
-            map.
-        });
 
-
-
-        return "\nDatabase dropped!\n"}*/
+        Map<String, Flow> map;
+        map=hashOperations.entries("FLOW");
+        for(String id : map.keySet())
+            deleteById(id);
+        return "\nDatabase dropped!\n";}
 
 }
