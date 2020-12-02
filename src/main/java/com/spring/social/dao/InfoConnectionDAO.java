@@ -25,31 +25,36 @@ public class InfoConnectionDAO {
 
     public long getElapsedTime(Long connectionId) 
     {
-        String sql = "Select ur.InfoConnection.Login_Date from " + InfoConnection.class.getName() + " ur " //
-                + " where ur.InfoConnection.ConnectionId = :connectionId ";
+        String sql = "Select ur.Login_Date from " + InfoConnection.class.getName() + " ur " //
+                + " where ur.connectionid = :connectionId ";
                 
-        Query query = this.entityManager.createQuery(sql, String.class);
-        query.setParameter("userId", connectionId);
+        Query query = this.entityManager.createQuery(sql, Date.class);
+        query.setParameter("connectionId", connectionId);
 
-        Date login = (Date) query.getSingleResult();
+        Date login = (Date)query.getSingleResult();
 
-        sql = "Select ur.InfoConnection.Logout_Date from " + InfoConnection.class.getName() + " ur " //
-                + " where ur.InfoConnection.ConnectionId = :connectionId ";
+        sql = "Select ur.Logout_Date from " + InfoConnection.class.getName() + " ur " //
+                + " where ur.connectionid = :connectionId ";
                 
-        query = this.entityManager.createQuery(sql, String.class);
-        query.setParameter("userId", connectionId);
+        query = this.entityManager.createQuery(sql, Date.class);
+        query.setParameter("connectionId", connectionId);
 
-        Date logout = (Date) query.getSingleResult();
+        Date logout = (Date)query.getSingleResult();
+        
+        if(logout == null)
+            logout = new Date();
 
+		System.out.println("TIME GOT");
+        
         return getDateDiff(login, logout, TimeUnit.MINUTES);
     }
 
     public long getNbConnection(Long userId)
     {
         String sql = "Select count(ur) from " + InfoConnection.class.getName() + " ur " //
-                + " where ur.InfoConnection.UserId = :userId ";
+                + " where ur.UserId = :userId ";
                 
-        Query query = this.entityManager.createQuery(sql, String.class);
+        Query query = this.entityManager.createQuery(sql, long.class);
         query.setParameter("userId", userId);
 
         return (long)query.getSingleResult();
@@ -109,17 +114,17 @@ public class InfoConnectionDAO {
 
     public void AddLogout(long connectionId)
     {
-        String sql = "UPDATE " + InfoConnection.class.getName() + 
-        "SET ur.Logout_Date = :date" +
-        "WHERE ur.connectionid = :id";
+        String sql = "UPDATE " + InfoConnection.class.getName() + //" ur " +
+        " SET Logout_Date = :date" +
+        " WHERE connectionid = :id";
                 
-        Query query = this.entityManager.createQuery(sql, String.class);
+        Query query = this.entityManager.createQuery(sql);
         query.setParameter("date", new Date());
         query.setParameter("id", connectionId);
         
         System.out.println("querrry = " + query);
 
-        query.getSingleResult();
+        query.executeUpdate();
     }
 
 }

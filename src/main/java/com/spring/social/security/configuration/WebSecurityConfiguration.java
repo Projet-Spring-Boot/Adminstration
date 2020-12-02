@@ -51,7 +51,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.usernameParameter("username").passwordParameter("password");
 
 		// Logout Config
-		http.authorizeRequests().and().logout().logoutUrl("/logout").logoutSuccessUrl("/");
+		http.authorizeRequests().and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
 
 		// Spring Social Config.
 		http.apply(new SpringSocialConfigurer()).signupUrl("/signup");

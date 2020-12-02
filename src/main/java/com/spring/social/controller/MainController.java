@@ -127,12 +127,13 @@ public class MainController
 	public String logoutSuccessfulPage(Model model) 
 	{
         System.out.println("SUCCESSFULLT LOG OUT ");
+        System.out.println("ID CONNECTION = " + connectionId);
 
 		model.addAttribute("title", "Logout");
 
 		infoConnectionDAO.AddLogout(connectionId);
 
-		return "logoutSuccessfulPage";
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/userInfo", method = RequestMethod.GET)
@@ -145,8 +146,8 @@ public class MainController
 		List<Long> list = infoConnectionDAO.getConnectionIdByUserId(logineduser2.getUserId());
 		connectionId = Collections.max(list,null);
 
-		System.out.println("List = " + list);
 		System.out.println("connection id = " + connectionId);
+		System.out.println("elapsed time = " + infoConnectionDAO.getElapsedTime(connectionId));
 
 		model.addAttribute("appUser", logineduser2);
 
