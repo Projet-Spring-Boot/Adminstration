@@ -421,6 +421,9 @@ public class MainController {
 			te.printStackTrace();
 		}
 
+		System.out.println("\n"+"Ecriture du repo dans la map OK, génération de l'affichage..."+"\n");
+		System.out.println(flowrepository.findAll());
+
 		return yourTimelimeDefinition;
 
 	}
@@ -510,6 +513,83 @@ public class MainController {
 		}
 
 		System.out.println("Sortie du try");
+		return "welcomePage";
+	}
+
+
+	@RequestMapping(value = { "/TestUpdateAPI" }, method = RequestMethod.GET)
+	public String TestUpdateAPI(Model model) {
+		model.addAttribute("title", "Welcome");
+
+		System.out.println("\nDropping the DB\n");
+		flowrepository.drop();
+		Map<String,Flow> yourTimelimeDefinition = null;
+
+		// [Step 1] : Récupérer la timeline de l'utilisateur 'principal' connecté.
+		UserConnection uc = userConnectionDAO.findUserConnectionByUserName("florian.sigalas");
+
+		try {
+			Twitter twitter = new TwitterFactory().getInstance();
+
+
+			twitter.setOAuthConsumer(socialProperties.getTwitterConsumerKey(),
+					socialProperties.getTwitterConsumerSecret());
+			AccessToken accessToken = new AccessToken(uc.getAccessToken(), uc.getSecret());
+
+			twitter.setOAuthAccessToken(accessToken);
+
+
+			ResponseList<Status> timeline = twitter.getHomeTimeline();
+
+
+
+			if (timeline == null) { //si pas internet pour récupérer la timeline
+				//On récupère votre objet List<Flow> en BDD si jamais il existe.
+				//yourTimelimeDefinition = .....
+
+				if(flowrepository != null) yourTimelimeDefinition=flowrepository.findAll();
+
+			} else { //On récupère ce dont vous avez besoin de l'objet "timeline
+				// [Step 2] : Ajouter cette timeline en BDD.
+
+				timeline.forEach(tweet -> {
+					Flow flow = new Flow();
+					flow.setId(TokenGenerator.generateNewToken());
+					flow.setUser_name(tweet.getUser().getName());
+					flow.setUser_img(tweet.getUser().get400x400ProfileImageURL());
+					flow.setPublished_content(tweet.getText());
+					flow.setPublishing(tweet.getCreatedAt());
+
+					MediaEntity[] medias = tweet.getMediaEntities();
+					List<String> mediaList=null;
+					for(int i=0;i<medias.length; i++)
+					{
+
+						mediaList.add(medias[i].getText());
+						mediaList.add(medias[i].getMediaURL());
+					}
+					flow.setPublished_media(mediaList);
+
+					flowrepository.save(flow);
+
+				});
+
+				yourTimelimeDefinition=flowrepository.findAll();
+
+			}
+
+
+			// [Step 3] : Renvoyer la timeline à l'IHM
+			//return yourTimelimeDefinition;
+
+		}catch (TwitterException te) {
+			te.printStackTrace();
+		}
+
+		System.out.println("\n"+"Ecriture du repo dans la map OK, génération de l'affichage..."+"\n");
+		System.out.println(flowrepository.findAll());
+
+
 		return "welcomePage";
 	}
 
