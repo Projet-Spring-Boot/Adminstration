@@ -126,5 +126,11 @@ public class InfoConnectionDAO {
 
         query.executeUpdate();
     }
+	
+    public Long getMaxConnectionIdByUserId(Long userId)
+    {
+        List<Long> list = getConnectionIdByUserId(userId);
+        return Collections.max(list);
+    }
 
 }
